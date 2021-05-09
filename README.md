@@ -1,5 +1,7 @@
 # Nifty GUI
 
+![Getting_Started](documentation/Getting_Started.md)
+
 ![Nifty](documentation/Helloworld.png)
 
 Nifty is available in the Maven central:
