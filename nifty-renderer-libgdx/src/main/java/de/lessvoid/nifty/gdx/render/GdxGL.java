@@ -315,7 +315,7 @@ public class GdxGL implements GL {
 
   @Override
   public void glColorPointer(int size, int type, int stride, FloatBuffer pointer) {
-    GL11.glColorPointer(size, stride, pointer);
+    GL11.glColorPointer(size, type, stride, pointer);
   }
 
   @Override
@@ -398,7 +398,7 @@ public class GdxGL implements GL {
 
   @Override
   public void glTexCoordPointer(int size, int type, int stride, FloatBuffer pointer) {
-      GL11.glTexCoordPointer(size, stride, pointer);
+      GL11.glTexCoordPointer(size, type, stride, pointer);
   }
 
   @Override
@@ -448,7 +448,7 @@ public class GdxGL implements GL {
 
   @Override
   public void glVertexPointer(int size, int type, int stride, FloatBuffer pointer) {
-      GL11.glVertexPointer(size, stride, pointer);
+      GL11.glVertexPointer(size, type, stride, pointer);
   }
 
   @Override

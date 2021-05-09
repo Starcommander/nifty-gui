@@ -1,7 +1,7 @@
 package de.lessvoid.nifty.examples.libgdx.tutorial;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import de.lessvoid.nifty.examples.libgdx.LibgdxExampleApplication;
 import de.lessvoid.nifty.examples.tutorial.TutorialExample;
@@ -11,15 +11,13 @@ import de.lessvoid.nifty.examples.tutorial.TutorialExample;
  */
 public class TutorialDemoMain {
   public static void main(String[] args) {
-    LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-    config.useGL30 = false;
-    config.vSyncEnabled = true;
-    config.width = 1024;
-    config.height = 768;
-    config.title = "Nifty LibGDX Desktop Examples: Nifty 1.2 Tutorial";
-    config.resizable = true;
+    Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+    config.useVsync(true);
+    config.setWindowedMode(1024, 768);
+    config.setTitle("Nifty LibGDX Desktop Examples: Nifty Tutorial");
+    config.setResizable(true);
     final int atlasWidth = 2048;
     final int atlasHeight = 2048;
-    new LwjglApplication(new LibgdxExampleApplication(new TutorialExample(), atlasWidth, atlasHeight), config);
+    new Lwjgl3Application(new LibgdxExampleApplication(new TutorialExample(), atlasWidth, atlasHeight), config);
   }
 }

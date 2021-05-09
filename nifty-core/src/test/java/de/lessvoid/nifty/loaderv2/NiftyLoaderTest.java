@@ -99,7 +99,7 @@ public class NiftyLoaderTest {
         + "</layer>"
         + "</screen>"
         + "</nifty>";
-    String actual = getActualScreen(niftyLoader, nifty, timeProvider, testXml);
+    String actual = getActualScreen(niftyLoader, nifty, nifty.getTimeProvider(), testXml);
     String expected = "\n" +
         " +[layer1]\n" +
         "   style [null]\n" +
