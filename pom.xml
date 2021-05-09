@@ -21,6 +21,7 @@
 
      Until Slick2D can be used with jdk 11 we have to drop support for now
      since I couldn't come up with a workaround for the missing Webstart dependency :(
+     TODO: Try to implement OpenWebStart
 
     <module>nifty-renderer-slick2d</module>
     -->
@@ -31,6 +32,7 @@
 
      The soundsystem openal has a dependency to Slick2D as well and
      therefore is not compatible with jdk 11. Sigh :(
+     TODO: Try to implement OpenWebStart
 
     <module>nifty-soundsystem-openal</module>
     -->
@@ -47,6 +49,7 @@
 
      Until Slick2D can be used with jdk 11 we have to drop support for now
      since I couldn't come up with a workaround for the missing Webstart dependency :(
+     TODO: Try to implement OpenWebStart
 
     <module>nifty-examples-slick2d</module>
     -->
@@ -223,7 +226,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>

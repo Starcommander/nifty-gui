@@ -1,20 +1,5 @@
 package de.lessvoid.nifty.elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Logger;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEvent;
@@ -60,8 +45,20 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.spi.time.TimeProvider;
 import de.lessvoid.nifty.tools.SizeValue;
 import de.lessvoid.xml.xpp3.Attributes;
-import java.util.regex.Pattern;
-import org.bushe.swing.event.EventTopicSubscriber;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author void
@@ -245,7 +242,6 @@ public class Element implements NiftyEvent, EffectManager.Notify {
 
   @Nullable
   private Map<String, Object> userData;
-  private final StyleRefresh styleListener = new StyleRefresh();
 
   public Element(
       @Nonnull final Nifty nifty,
@@ -375,8 +371,6 @@ public class Element implements NiftyEvent, EffectManager.Notify {
       ApplyRenderer rendererApply = rendererApplier.get(renderer.getClass());
       rendererApply.apply(targetScreen, this, attributes, renderEngine);
     }
-    //Subscribe for a style refresh
-    nifty.getEventService().subscribeStrongly("style-refresh:" + getStyle(), styleListener);
   }
 
   public void initializeFromPostAttributes(@Nonnull final Attributes attributes) {
@@ -769,7 +763,7 @@ public class Element implements NiftyEvent, EffectManager.Notify {
 
     if (layoutManager != null) {
 
-      // unset width, or width="sum" or width="max"
+      // unset width, or width="sum", width="max" or width="min"
       // try to calculate the width constraint using the children
       // but only if all child elements have a fixed pixel width.
 
@@ -824,6 +818,19 @@ public class Element implements NiftyEvent, EffectManager.Notify {
           setConstraintWidth(SizeValue.max(0));
         }
 
+      } else if (myWidth.hasMin()) {
+        List<LayoutPart> layoutPartChild = getLayoutChildrenWithIndependentWidth();
+        SizeValue newWidth = layoutPart.getMinWidth(layoutPartChild);
+        if (newWidth.hasValue()) {
+          int newWidthPx = newWidth.getValueAsInt(0);
+          newWidthPx += this.layoutPart.getBoxConstraints().getPaddingLeft().getValueAsInt(newWidth.getValueAsInt
+                  (newWidthPx));
+          newWidthPx += this.layoutPart.getBoxConstraints().getPaddingRight().getValueAsInt(newWidth.getValueAsInt
+                  (newWidthPx));
+          setConstraintWidth(SizeValue.min(newWidthPx));
+        } else {
+          setConstraintWidth(SizeValue.min(0));
+        }
       }
     }
   }
@@ -863,7 +870,7 @@ public class Element implements NiftyEvent, EffectManager.Notify {
 
     if (layoutManager != null) {
 
-      // unset height, or height="sum" or height="max"
+      // unset height, or height="sum", height="max" or height="min"
       // try to calculate the height constraint using the children
       // but only if all child elements have a fixed pixel height.
 
@@ -919,6 +926,19 @@ public class Element implements NiftyEvent, EffectManager.Notify {
           setConstraintHeight(SizeValue.max(0));
         }
 
+      } else if (myHeight.hasMin()) {
+        List<LayoutPart> layoutPartChild = getLayoutChildrenWithIndependentHeight();
+        SizeValue newHeight = layoutPart.getMinHeight(layoutPartChild);
+        if (newHeight.hasValue()) {
+          int newHeightPx = newHeight.getValueAsInt(0);
+          newHeightPx += this.layoutPart.getBoxConstraints().getPaddingTop().getValueAsInt(newHeight.getValueAsInt
+                  (newHeightPx));
+          newHeightPx += this.layoutPart.getBoxConstraints().getPaddingBottom().getValueAsInt(newHeight.getValueAsInt
+                  (newHeightPx));
+          setConstraintHeight(SizeValue.min(newHeightPx));
+        } else {
+          setConstraintHeight(SizeValue.min(0));
+        }
       }
     }
   }
@@ -1716,7 +1736,7 @@ public class Element implements NiftyEvent, EffectManager.Notify {
    * Process mouse event for this element
    * @param mouseEvent
    * @param eventTime is the current time in milliseconds
-   * @return True if the event has been processed 
+   * @return True if the event has been processed
    */
   public boolean mouseEvent(@Nonnull final NiftyMouseInputEvent mouseEvent, final long eventTime) {
     mouseEventHover(mouseEvent);
@@ -1937,6 +1957,33 @@ public class Element implements NiftyEvent, EffectManager.Notify {
     }
 
     return null;
+  }
+
+  public List<Element> findElementsByStyle(@Nullable final String... styleIds) {
+    if (styleIds == null || styleIds.length == 0) {
+      return Collections.emptyList();
+    }
+
+    List<Element> elements = new ArrayList<Element>();
+    for (String styleId : styleIds) {
+      if (hasStyle(this, styleId)) {
+        elements.add(this);
+        break;
+      }
+    }
+
+    // Check the children
+    if (children != null) {
+      for (Element e : children) {
+        elements.addAll(e.findElementsByStyle(styleIds));
+      }
+    }
+
+    return elements;
+  }
+
+  private static boolean hasStyle(Element e, String styleId) {
+    return styleId.equals(e.getStyle());
   }
 
   private boolean childIdMatch(@Nonnull final String name, @Nullable final String id) {
@@ -2160,20 +2207,6 @@ public class Element implements NiftyEvent, EffectManager.Notify {
       }
     }
   }
-  
-  /**
-  * An internal class that handles a possible style changing.
-  * @see Nifty#registerStyle(de.lessvoid.nifty.loaderv2.types.StyleType)
-  */
-  private class StyleRefresh implements EventTopicSubscriber {
-    @Override
-    public void onEvent(final String string, final Object style) {
-      log.fine("Rereshing style of " + Element.this.getId());
-      String styleid = style.toString();
-      String simplyStyle = styleid.split("#")[0];
-      Element.this.setStyle(simplyStyle);
-    }
-  }
 
   /**
    * @author void
@@ -2310,11 +2343,16 @@ public class Element implements NiftyEvent, EffectManager.Notify {
     return focusHandler;
   }
 
+  public void refreshStyle(final String styleId) {
+    log.log(Level.FINE, "Rereshing style of {0}", Element.this.getId());
+    String simplyStyle = styleId.split("#")[0];
+    setStyle(simplyStyle);
+  }
+
   public void setStyle(@Nonnull final String newStyle) {
     final String oldStyle = getStyle();
     if (oldStyle != null) {
       removeStyle(oldStyle);
-      nifty.getEventService().unsubscribe("style-refresh:" + oldStyle, styleListener);
     }
     elementType.getAttributes().set("style", newStyle);
     elementType.applyStyles(nifty.getDefaultStyleResolver());
@@ -2326,7 +2364,7 @@ public class Element implements NiftyEvent, EffectManager.Notify {
       elementType.applyInteract(nifty, screen, this);
     }
     layoutElements();
-    log.fine("after setStyle [" + newStyle + "]\n" + elementType.output(0));
+    log.log(Level.FINE, "after setStyle [{0}]\n{1}", new Object[]{newStyle, elementType.output(0)});
     publishEvent();
   }
 
@@ -2340,8 +2378,8 @@ public class Element implements NiftyEvent, EffectManager.Notify {
 
     elementType.removeWithTag(style);
     effectManager.removeAllEffects();
-     
-    // If the new style has no image the renderer will still display it 
+
+    // If the new style has no image the renderer will still display it
     // workaround :
     ImageRenderer renderer = getRenderer(ImageRenderer.class);
     if (renderer!= null) {
