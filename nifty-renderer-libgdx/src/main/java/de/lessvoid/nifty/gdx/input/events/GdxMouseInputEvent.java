@@ -70,7 +70,7 @@ public final class GdxMouseInputEvent implements GdxInputEvent, Pool.Poolable {
     } else if (button != NO_BUTTON) {
       return processor.touchUp(mouseX, mouseY, pointer, button);
     } else if (wheelDelta != 0) {
-      return processor.scrolled(wheelDelta);
+      return processor.scrolled(0,wheelDelta);
     } else {
       return processor.mouseMoved(mouseX, mouseY);
     }

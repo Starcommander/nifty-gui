@@ -169,8 +169,8 @@ public class GdxInputSystem implements InputSystem, InputProcessor {
   }
 
   @Override
-  public boolean scrolled(final int amount) {
-    eventQueue.offer(GdxMouseInputEvent.getMouseEvent(input.getX(), input.getY(), amount, 0,
+  public boolean scrolled(final float amountX, final float amountY) {
+    eventQueue.offer(GdxMouseInputEvent.getMouseEvent(input.getX(), input.getY(), (int)amountY, 0,
         GdxMouseInputEvent.NO_BUTTON, false, false));
     return true;
   }
