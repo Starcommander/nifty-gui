@@ -4,7 +4,7 @@
   <groupId>com.github.nifty-gui</groupId>
   <artifactId>nifty-main</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>${nifty-version}</version>
   <name>Nifty Main Parent Project</name>
   <modules>
     <module>nifty-core</module>
@@ -81,6 +81,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <nifty-version>1.5.0-SNAPSHOT</nifty-version>
   </properties>
   <build>
     <pluginManagement>

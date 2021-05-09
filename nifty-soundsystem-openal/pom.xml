@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.github.nifty-gui</groupId>
         <artifactId>nifty-main</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>${nifty-version}</version>
     </parent>
     <artifactId>nifty-openal-soundsystem</artifactId>
     <name>Nifty Sound Device for OpenAL using LWJGL</name>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.github.nifty-gui</groupId>
             <artifactId>nifty</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
+            <version>${nifty-version}</version>
         </dependency>
         <dependency>
             <groupId>org.lwjgl.lwjgl</groupId>

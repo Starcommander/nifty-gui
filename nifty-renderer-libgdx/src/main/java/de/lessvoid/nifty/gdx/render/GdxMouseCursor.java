@@ -2,7 +2,7 @@ package de.lessvoid.nifty.gdx.render;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-
+import com.badlogic.gdx.graphics.Cursor;
 import de.lessvoid.nifty.spi.render.MouseCursor;
 
 import java.util.logging.Level;
@@ -19,6 +19,7 @@ public final class GdxMouseCursor implements MouseCursor {
   private final GdxImage cursorImage;
   private final int hotspotX;
   private final int hotspotY;
+  private Cursor cursor;
 
   /**
    * @param cursorImage The pre-loaded cursor image.
@@ -39,7 +40,8 @@ public final class GdxMouseCursor implements MouseCursor {
   public void enable() {
     try {
       if (cursorImage.hasPixmap()) {
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(cursorImage.getPixmap(), hotspotX, hotspotY));
+        cursor = Gdx.graphics.newCursor(cursorImage.getPixmap(), hotspotX, hotspotY);
+        Gdx.graphics.setCursor(cursor);
       }
     } catch (GdxRuntimeException e) {
       log.log(Level.SEVERE, "Applying the mouse cursor failed!", e);
@@ -52,7 +54,11 @@ public final class GdxMouseCursor implements MouseCursor {
    */
   @Override
   public void disable() {
-    Gdx.graphics.setCursor(Gdx.graphics.newCursor(null, hotspotX, hotspotY));
+    try {
+      Gdx.graphics.setCursor(Gdx.graphics.newCursor(null, hotspotX, hotspotY));
+    } catch (NullPointerException e) {} // On lwjgl3 this is not necessary, and causes this NullPointer.
+    if (cursor!=null) { cursor.dispose(); }
+    cursor = null;
   }
 
   /**
@@ -60,5 +66,7 @@ public final class GdxMouseCursor implements MouseCursor {
    */
   @Override
   public void dispose() {
+    if (cursor!=null) { cursor.dispose(); }
+    cursor = null;
   }
 }

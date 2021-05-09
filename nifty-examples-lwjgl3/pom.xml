@@ -3,15 +3,12 @@
   <parent>
     <artifactId>nifty-main</artifactId>
     <groupId>com.github.nifty-gui</groupId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>${nifty-version}</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>nifty-examples-lwjgl3</artifactId>
   <name>Nifty Examples LWJGL 3</name>
   <description>Lots of Nifty example code! You can find the source for nearly all demos/tutorials in here.</description>
-  <properties>
-    <nifty-version>1.5.0-SNAPSHOT</nifty-version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.github.nifty-gui</groupId>
