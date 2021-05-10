@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.nifty-gui</groupId>
+        <artifactId>nifty-main</artifactId>
+        <version>${nifty-version}</version>
+    </parent>
+    <artifactId>nifty-openal3-soundsystem</artifactId>
+    <name>Nifty Sound Device for OpenAL using LWJGL3</name>
+    <properties>
+	<lwjgl.version>3.2.3</lwjgl.version>
+    </properties>
+
+<profiles>
+	<profile>
+		<id>lwjgl-natives-linux-amd64</id>
+		<activation>
+			<os>
+				<family>unix</family>
+				<arch>amd64</arch>
+			</os>
+		</activation>
+		<properties>
+			<lwjgl.natives>natives-linux</lwjgl.natives>
+		</properties>
+	</profile>
+	<profile>
+		<id>lwjgl-natives-macos-amd64</id>
+		<activation>
+			<os>
+				<family>mac</family>
+				<arch>amd64</arch>
+			</os>
+		</activation>
+		<properties>
+			<lwjgl.natives>natives-macos</lwjgl.natives>
+		</properties>
+	</profile>
+	<profile>
+		<id>lwjgl-natives-windows-amd64</id>
+		<activation>
+			<os>
+				<family>windows</family>
+				<arch>amd64</arch>
+			</os>
+		</activation>
+		<properties>
+			<lwjgl.natives>natives-windows</lwjgl.natives>
+		</properties>
+	</profile>
+</profiles>
+<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-bom</artifactId>
+			<version>${lwjgl.version}</version>
+			<scope>import</scope>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+</dependencyManagement>
+    <dependencies>
+        <!-- dependency>
+            <groupId>org.slick2d</groupId>
+            <artifactId>slick2d-core</artifactId>
+            <version>1.0.1</version>
+        </dependency -->
+        <dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-assimp</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-glfw</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-openal</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-opengl</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-stb</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-assimp</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-glfw</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-openal</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-opengl</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-stb</artifactId>
+		<classifier>${lwjgl.natives}</classifier>
+	</dependency>
+        <dependency>
+            <groupId>com.github.nifty-gui</groupId>
+            <artifactId>nifty</artifactId>
+            <version>${nifty-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.projectdarkstar.ext.jorbis</groupId>
+            <artifactId>jorbis</artifactId>
+            <version>0.0.17</version>
+        </dependency>
+    </dependencies>
+    <description>This is an OpenAL/lwjgl based SoundDevice for Nifty GUI. It was extracted out of Slick2D to be
+        independent of the whole Slick2D library and to be used with none Slick2D based renderes. All credits for the
+        original code go to Kevin Glass and all Slick2D contributers.
+    </description>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>dependencies</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

@@ -9,11 +9,6 @@
     <name>Nifty Sound Device for OpenAL using LWJGL</name>
     <dependencies>
         <dependency>
-            <groupId>org.slick2d</groupId>
-            <artifactId>slick2d-core</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.nifty-gui</groupId>
             <artifactId>nifty</artifactId>
             <version>${nifty-version}</version>
