@@ -15,6 +15,7 @@
     <module>nifty-renderer-libgdx</module>
     <module>nifty-renderer-lwjgl</module>
     <module>nifty-renderer-lwjgl3</module>
+    <module>nifty-renderer-javafx</module>
     <!--
      Could not find artifact javax.jnlp:jnlp-api:jar:5.0 at specified
      path /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/lib/javaws.jar
@@ -26,16 +27,9 @@
     <module>nifty-renderer-slick2d</module>
     -->
 
-    <!--
-     Could not find artifact javax.jnlp:jnlp-api:jar:5.0 at specified
-     path /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/lib/javaws.jar
-
-     The soundsystem openal has a dependency to Slick2D as well and
-     therefore is not compatible with jdk 11. Sigh :(
-     TODO: Try to implement OpenWebStart
-
     <module>nifty-soundsystem-openal</module>
-    -->
+    <module>nifty-soundsystem-openal3</module>
+
     <module>nifty-soundsystem-pauls-sound</module>
     <module>nifty-html</module>
     <module>nifty-examples</module>
@@ -43,6 +37,7 @@
     <module>nifty-examples-libgdx</module>
     <module>nifty-examples-lwjgl</module>
     <module>nifty-examples-lwjgl3</module>
+    <module>nifty-examples-javafx</module>
     <!--
      Could not find artifact javax.jnlp:jnlp-api:jar:5.0 at specified
      path /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/lib/javaws.jar
