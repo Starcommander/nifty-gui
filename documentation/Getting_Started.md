@@ -2,14 +2,14 @@
 
 [Getting_Started](../documentation/Getting_Started.md) &nbsp; [Javadoc](../documentation/Getting_Started.md) &nbsp; [Examples](../documentation/Getting_Started.md)
 
-__To build the examples you need maven and java11 installed.__
+__To build the examples you need maven and java11(jdk) installed.__
 
 Then just enter commandline in project folder.
 - mvn clean compile install
 
 Or to just compile a specific module:
 <br>Example Lwjgl-examples:
-- mvn compile -pl nifty-examples-lwjgl -am
+- mvn install -pl nifty-examples-lwjgl -am
 
 To start any example you can execute the specific runnable jar.
 <br>Example LibGdx:

@@ -73,7 +73,7 @@ public class NiftyExampleLoaderLWJGL3 {
    *                 It also provides you access to the Nifty instance.
    */
   public static void run (@Nonnull final NiftyExample example, @Nullable RenderLoopCallback callback) {
-    long winID = app.init(example.getTitle());
+    long winID = app.init(example.getTitle(), WIDTH, HEIGHT);
     if (!initSubSystems(winID)) { shutDown(); throw new IllegalStateException("Cannot init subsystems."); }
 
     try {

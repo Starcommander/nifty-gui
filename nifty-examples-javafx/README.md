@@ -6,5 +6,5 @@ First implemention of **javafx**.
 <br>InputSystem not implemented yet.
 <br>SoundSystem is using **javafx**, except for some codecs (ogg) **javax.sound.sampled** is used.
 <br>The renderer is still buggy.
-<br>[JavaFX](https://javafx.io/)
+<br>[JavaFX](https://openjfx.io/)
 <br>[Main](../README.md)
