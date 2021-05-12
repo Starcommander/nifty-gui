@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.github.nifty-gui</groupId>
+    <artifactId>nifty-main</artifactId>
+    <version>${nifty-version}</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <name>Nifty Examples for JavaFX</name>
+  <artifactId>nifty-examples-javafx</artifactId>
+  <url>http://maven.apache.org</url>
+  <properties>
+      <!-- Change the mainClass 'AllDemoMain' value if you want to run a different example within de.lessvoid.nifty.examples.lwjgl3.* -->
+      <mainClass>de.lessvoid.nifty.examples.javafx.JavafxExampleApp</mainClass>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.github.nifty-gui</groupId>
+      <artifactId>nifty</artifactId>
+      <version>${nifty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.nifty-gui</groupId>
+      <artifactId>nifty-default-controls</artifactId>
+      <version>${nifty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.nifty-gui</groupId>
+      <artifactId>nifty-javafx-renderer</artifactId>
+      <version>${nifty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.nifty-gui</groupId>
+      <artifactId>nifty-style-black</artifactId>
+      <version>${nifty-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.nifty-gui</groupId>
+        <artifactId>nifty-examples</artifactId>
+        <version>${nifty-version}</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+      </plugin>
+      <plugin>
+        <groupId>com.googlecode.mavennatives</groupId>
+        <artifactId>maven-nativedependencies-plugin</artifactId>
+        <version>0.0.5</version>
+        <executions>
+          <!-- 
+            If you use this pom.xml with eclipse m2e plugin you'll need to install the
+            maven natives eclipse plugin from http://code.google.com/p/mavennatives/
+            to make the error message go away. It's as simple as installing it using
+            the following update site: http://mavennatives.googlecode.com/svn/eclipse-update/.
+
+            This plugin detects if you have the maven plugin configured, and if you do
+            it executes the unpacking of natives, and configures the Native Library Location.
+
+            This will allow you to run the examples from within eclipse without any more
+            setup of LWJGL required! Just execute the individual examples like any other
+            Java application from eclipse. Done! :) 
+           -->
+          <execution>
+            <id>unpacknatives</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- this builds a totally standalone jar file when you invoke: mvn package -Pdesktop -->
+      <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+              <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                  <manifest>
+                      <mainClass>${mainClass}</mainClass>
+                  </manifest>
+              </archive>
+          </configuration>
+          <executions>
+              <execution>
+                  <id>make-assembly</id>
+                  <phase>package</phase>
+                  <goals>
+                      <goal>single</goal>
+                  </goals>
+              </execution>
+          </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
