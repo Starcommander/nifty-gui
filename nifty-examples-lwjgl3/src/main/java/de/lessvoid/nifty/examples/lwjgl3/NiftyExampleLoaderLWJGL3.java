@@ -3,33 +3,18 @@ package de.lessvoid.nifty.examples.lwjgl3;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.examples.LoggerShortFormat;
 import de.lessvoid.nifty.examples.NiftyExample;
-import de.lessvoid.nifty.nulldevice.NullSoundDevice;
 import de.lessvoid.nifty.render.batch.BatchRenderDevice;
-import de.lessvoid.nifty.render.batch.CheckGL;
-import de.lessvoid.nifty.render.batch.spi.GL;
 import de.lessvoid.nifty.renderer.lwjgl3.input.Lwjgl3InputSystem;
 import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendCoreProfileFactory;
 import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendFactory;
-import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3GL;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
-import org.lwjgl.BufferUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glViewport;
 
 /**
  * Loads & runs any {@link de.lessvoid.nifty.examples.NiftyExample} using Nifty and LWJGL3.
@@ -78,8 +63,9 @@ public class NiftyExampleLoaderLWJGL3 {
 
     try {
       example.prepareStart(nifty);
-      if (example.getMainXML() != null) {
-        nifty.fromXml(example.getMainXML(), example.getStartScreen());
+      String mainXml = example.getMainXML();
+      if (mainXml != null) {
+        nifty.fromXml(mainXml, example.getStartScreen());
       } else {
         nifty.gotoScreen(example.getStartScreen());
       }
@@ -88,7 +74,6 @@ public class NiftyExampleLoaderLWJGL3 {
     }
 
     app.loop(nifty, callback);
-//render(nifty, callback);
     shutDown();
   }
 

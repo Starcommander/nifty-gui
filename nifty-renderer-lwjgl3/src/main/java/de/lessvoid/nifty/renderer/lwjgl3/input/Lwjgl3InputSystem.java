@@ -28,7 +28,7 @@ import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
  */
 public class Lwjgl3InputSystem implements InputSystem {
   
-  private final Logger log = Logger.getLogger(Lwjgl3InputSystem.class.getName());
+  private final static Logger log = Logger.getLogger(Lwjgl3InputSystem.class.getName());
   private final long glfwWindow;
   private final DoubleBuffer cursorX = BufferUtils.createDoubleBuffer(1);
   private final DoubleBuffer cursorY = BufferUtils.createDoubleBuffer(1);
@@ -77,6 +77,10 @@ public class Lwjgl3InputSystem implements InputSystem {
 
   public void startup() throws Exception {
     log.finer("Initializing LWJGL3 input system...");
+    glfwSetCursorPosCallback(glfwWindow, cursorPosCallback);
+    glfwSetMouseButtonCallback(glfwWindow, mouseButtonCallback);
+    glfwSetKeyCallback(glfwWindow, keyCallback);
+    glfwSetScrollCallback(glfwWindow, scrollCallback);
     
     initialized = true;
   }

@@ -20,7 +20,7 @@ public class Lwjgl3MouseCursor implements MouseCursor {
   @Nonnull
   private static final Logger log = Logger.getLogger(Lwjgl3MouseCursor.class.getName());
   private final long glfwWindow;
-// TODO: Cursor currently results into NullPointer, commented out.
+// TODO: Cursor currently results into NullPointer or vm-crash, commented out.
 //  private final long cursor;
 
   public Lwjgl3MouseCursor(final long glfwWindow, @Nonnull final String cursorImageFilename, final int hotspotX,
@@ -58,6 +58,6 @@ public class Lwjgl3MouseCursor implements MouseCursor {
 
   @Override
   public void disable() {
-    glfwSetCursor(glfwWindow, GLFW_CURSOR_NORMAL);
+//    glfwSetCursor(glfwWindow, GLFW_CURSOR_NORMAL);
   }
 }
