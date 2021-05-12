@@ -26,8 +26,7 @@ public class Tools {
 
     int error = GL11.glGetError();
     if (error != GL11.GL_NO_ERROR) {
-      String glerrmsg = GLUtil.getErrorString(error);
-      log.warning("OpenGL Error: (" + error + ") " + glerrmsg + ", " + fkt);
+      log.warning("OpenGL Error: (" + error + ") " + fkt);
     }
 
   }

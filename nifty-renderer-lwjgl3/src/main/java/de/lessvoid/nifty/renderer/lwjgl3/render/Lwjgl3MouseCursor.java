@@ -20,7 +20,8 @@ public class Lwjgl3MouseCursor implements MouseCursor {
   @Nonnull
   private static final Logger log = Logger.getLogger(Lwjgl3MouseCursor.class.getName());
   private final long glfwWindow;
-  private final long cursor;
+// TODO: Cursor currently results into NullPointer, commented out.
+//  private final long cursor;
 
   public Lwjgl3MouseCursor(final long glfwWindow, @Nonnull final String cursorImageFilename, final int hotspotX,
       final int hotspotY, @Nonnull final NiftyResourceLoader resourceLoader) throws IOException {
@@ -33,8 +34,8 @@ public class Lwjgl3MouseCursor implements MouseCursor {
     try {
       ByteBuffer imageData = imageLoader.loadAsByteBufferARGB(imageStream, true);
       imageData.rewind();
-      GLFWImage image = new GLFWImage(imageData);
-      cursor = glfwCreateCursor(image, hotspotX, hotspotY);
+//      GLFWImage image = new GLFWImage(imageData);
+//      cursor = glfwCreateCursor(image, hotspotX, hotspotY);
     } finally {
       try {
         imageStream.close();
@@ -47,12 +48,12 @@ public class Lwjgl3MouseCursor implements MouseCursor {
 
   @Override
   public void dispose() {
-    glfwDestroyCursor(cursor);
+//    glfwDestroyCursor(cursor);
   }
 
   @Override
   public void enable() {
-    glfwSetCursor(glfwWindow, cursor);
+//    glfwSetCursor(glfwWindow, cursor);
   }
 
   @Override

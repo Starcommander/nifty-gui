@@ -155,13 +155,8 @@ public class Lwjgl3RenderImage implements RenderImage {
   private void checkGLError() {
     int error = GL11.glGetError();
     if (error != GL11.GL_NO_ERROR) {
-      String glerrmsg = GLUtil.getErrorString(error);
-      log.warning("OpenGL Error: (" + error + ") " + glerrmsg);
-      try {
-        throw new Exception();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      log.warning("OpenGL Error: (" + error + ")");
+      new Exception("OpenGL Error").printStackTrace();
     }
   }
 }
