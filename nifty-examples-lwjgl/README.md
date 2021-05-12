@@ -1,6 +1,6 @@
 # Nifty GUI
 
-[Getting_Started](../documentation/Getting_Started.md) &nbsp; [Javadoc](../documentation/Getting_Started.md) &nbsp; [Examples](../documentation/Getting_Started.md)
+[Getting_Started](../documentation/Getting_Started.md) &nbsp; [Javadoc](../documentation/Getting_Started.md) &nbsp; [Examples](../documentation/Examples.md)
 
 Legacy lwjgl v2.x
 <br>Not tested yet

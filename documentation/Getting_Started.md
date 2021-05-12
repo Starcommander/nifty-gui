@@ -1,6 +1,6 @@
 # Nifty GUI
 
-[Getting_Started](../documentation/Getting_Started.md) &nbsp; [Javadoc](../documentation/Getting_Started.md) &nbsp; [Examples](../documentation/Getting_Started.md)
+[Getting_Started](../documentation/Getting_Started.md) &nbsp; [Javadoc](../documentation/Getting_Started.md) &nbsp; [Examples](../documentation/Examples.md)
 
 __To build the examples you need maven and java11(jdk) installed.__
 
