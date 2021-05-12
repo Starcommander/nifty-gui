@@ -7,6 +7,10 @@ __To build the examples you need maven and java11 installed.__
 Then just enter commandline in project folder.
 - mvn clean compile install
 
+Or to just compile a specific module:
+<br>Example Lwjgl-examples:
+- mvn compile -pl nifty-examples-lwjgl -am
+
 To start any example you can execute the specific runnable jar.
 <br>Example LibGdx:
 - java -jar nifty-examples-libgdx/desktop/target/nifty-examples-libgdx-desktop-1.5.0-SNAPSHOT-jar-with-dependencies.jar
