@@ -36,6 +36,8 @@ public class JavafxRenderDevice implements RenderDevice {
   private RenderFont fpsFont;
   @Nonnull
   private final Pane pane;
+  private final int initW;
+  private final int initH;
 //
 //  // we keep track of which GL states we've already set to make sure we don't set
 //  // the same state twice.
@@ -59,8 +61,10 @@ public class JavafxRenderDevice implements RenderDevice {
    * The standard constructor. You'll use this in production code. Using this
    * constructor will configure the RenderDevice to not log FPS on System.out.
    */
-  public JavafxRenderDevice(Pane pane) {
+  public JavafxRenderDevice(Pane pane, int initW, int initH) {
     this.pane = pane;
+    this.initW = initW;
+    this.initH = initH;
     
 //    time = timeProvider.getMsTime();
 //    frames = 0;
@@ -82,7 +86,9 @@ public class JavafxRenderDevice implements RenderDevice {
    */
   @Override
   public int getWidth() {
-    return (int)pane.getPrefWidth() + 300;
+    var scene = pane.getScene();
+    if (scene == null) { return initW; }
+    return (int)scene.getWidth();
   }
 
   /**
@@ -92,7 +98,9 @@ public class JavafxRenderDevice implements RenderDevice {
    */
   @Override
   public int getHeight() {
-    return (int)pane.getPrefHeight() + 300;
+    var scene = pane.getScene();
+    if (scene == null) { return initH; }
+    return (int)scene.getHeight();
   }
 
   @Override
@@ -195,20 +203,23 @@ public class JavafxRenderDevice implements RenderDevice {
       @Nonnull final Color color,
       final float scale) {
     log.fine("renderImage()");
+//    System.out.println("renderImage1(" + x + "," + y + ")");
     
     JavafxRenderImage img = (JavafxRenderImage)image;
-    img.getImage().setScaleX(scale);
-    img.getImage().setScaleY(scale);
-    img.getImage().setX(x);
-    img.getImage().setY(y);
+    var imgView = img.getImageView();
+    if (pane.getChildren().contains(imgView))
+    {
+      imgView = img.createImageView();
+    }
+    imgView.setScaleX(scale);
+    imgView.setScaleY(scale);
+    imgView.setX(x);
+    imgView.setY(y);
     
     //TODO: Width and Height
     
-    if (!pane.getChildren().contains(img.getImage()))
-    {
-      pane.getChildren().add(img.getImage());
-    }
-System.out.println("JavafxRenderDevice.renderImage() w=" + width + " h=" + height + " x=" + x + " y=" + y + " s=" + scale);
+    pane.getChildren().add(imgView);
+//System.out.println("JavafxRenderDevice.renderImage() w=" + width + " h=" + height + " x=" + x + " y=" + y + " s=" + scale);
 
   }
 
@@ -241,23 +252,27 @@ System.out.println("JavafxRenderDevice.renderImage() w=" + width + " h=" + heigh
       final int centerX,
       final int centerY) {
     log.fine("renderImage2()");
-
-    
+//    System.out.println("renderImage2(" + x + "," + y + ")" +srcX + "/" + srcY + ": " + ((JavafxRenderImage)image).fn);
     JavafxRenderImage img = (JavafxRenderImage)image;
-    img.getImage().setScaleX(scale);
-    img.getImage().setScaleY(scale);
-    img.getImage().setX(x);
-    img.getImage().setY(y);
+    var imgView = img.getImageView();
+    if (pane.getChildren().contains(imgView))
+    {
+      imgView = img.createImageView();
+    }
+    imgView.setScaleX(scale);
+    imgView.setScaleY(scale);
+    imgView.setX(x);
+    imgView.setY(y);
     
-    img.getImage().setViewport(new Rectangle2D(srcX,srcY,srcW,srcH));
+    imgView.setViewport(new Rectangle2D(srcX,srcY,srcW,srcH));
     
     //TODO: Width and Height
     //TODO: CenterX and CenterY
     
-    if (!pane.getChildren().contains(img.getImage()))
-    {
-      pane.getChildren().add(img.getImage());
-    }
+//    if (!pane.getChildren().contains(imgView))
+//    {
+      pane.getChildren().add(imgView);
+//    }
 
   }
 

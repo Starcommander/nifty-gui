@@ -16,16 +16,13 @@ public class JavafxMainFrame extends Application
 {
   public static Pane root = new Pane();
   
-  private int w;
-  private int h;
-
     @Override
     public void start(Stage primaryStage) {
         String title = "Hello World!";
         List<String> args = getParameters().getRaw();
         if (args.size() != 3) { throw new IllegalStateException("Must have 3 Arguments for javafx frame: title width height"); }
-        w = Integer.parseInt(args.get(1));
-        h = Integer.parseInt(args.get(2));
+        int w = Integer.parseInt(args.get(1));
+        int h = Integer.parseInt(args.get(2));
 //        root.setMinWidth(w);
 //        root.setMinHeight(h);
         title = args.get(0);

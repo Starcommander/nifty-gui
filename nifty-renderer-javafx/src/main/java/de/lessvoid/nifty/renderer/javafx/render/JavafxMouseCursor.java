@@ -1,14 +1,9 @@
 package de.lessvoid.nifty.renderer.javafx.render;
 
-import de.lessvoid.nifty.render.io.ImageLoader;
-import de.lessvoid.nifty.render.io.ImageLoaderFactory;
 import de.lessvoid.nifty.spi.render.MouseCursor;
 import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 

@@ -24,6 +24,7 @@ public class JavafxRenderImage implements RenderImage {
 //  private int textureId;
   private Image image;
   private ImageView imageV;
+public String fn; //Just for debug!!!
 
   @Nonnull
   public JavafxRenderImage (
@@ -31,6 +32,7 @@ public class JavafxRenderImage implements RenderImage {
           final boolean filterParam,
           @Nonnull final NiftyResourceLoader resourceLoader) {
     log.fine("Loading image: " + filename);
+    this.fn = filename;
     ImageLoader loader = ImageLoaderFactory.createImageLoader(filename);
     InputStream imageStream = null;
     try {
@@ -69,7 +71,9 @@ public class JavafxRenderImage implements RenderImage {
     return (int)(image.getHeight()*imageV.getScaleY());
   }
   
-  public ImageView getImage() { return imageV; }
+  public ImageView getImageView() { return imageV; }
+  
+  public ImageView createImageView() { return new ImageView(image); }
 
   @Override
   public void dispose() {

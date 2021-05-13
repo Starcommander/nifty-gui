@@ -2,22 +2,13 @@ package de.lessvoid.nifty.examples.javafx;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.examples.NiftyExample;
-import de.lessvoid.nifty.render.batch.BatchRenderDevice;
-import de.lessvoid.nifty.render.batch.CheckGL;
-import de.lessvoid.nifty.render.batch.spi.GL;
 import de.lessvoid.nifty.renderer.javafx.input.JavafxInputSystem;
 
 import de.lessvoid.nifty.renderer.javafx.render.JavafxRenderDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 
 import de.lessvoid.nifty.sound.javafx.JavafxSoundDevice;
-//import de.lessvoid.nifty.sound.paulssoundsystem.PaulsSoundsystemSoundDevice;
 
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
@@ -25,7 +16,8 @@ import javax.annotation.Nullable;
 
 public class JavafxNiftyExampleLoader {
   private static final Logger log = Logger.getLogger(JavafxNiftyExampleLoader.class.getName());
-  private static final boolean USE_CORE_PROFILE = true;
+  private static final int FRAME_W = 1024;
+  private static final int FRAME_H = 768;
   
   private static Nifty nifty;
   private static NiftyExample example;
@@ -47,8 +39,8 @@ public class JavafxNiftyExampleLoader {
     example = runExample;
     String[] args = new String[3];
     args[0] = example.getTitle();
-    args[1] = "400";
-    args[2] = "600";
+    args[1] = "" + FRAME_W;
+    args[2] = "" + FRAME_H;
             
     javafx.application.Application.launch(JavafxMainFrame.class, args);
   }
@@ -89,7 +81,7 @@ public class JavafxNiftyExampleLoader {
     try {
       log.info ("\n\nRunning in Javafx.\n\n");
       nifty = new Nifty(
-              new JavafxRenderDevice(JavafxMainFrame.root) ,
+              new JavafxRenderDevice(JavafxMainFrame.root, FRAME_W, FRAME_H) ,
 //              new SoundDeviceNull(),
 //new PaulsSoundsystemSoundDevice(paulscode.sound.libraries.LibraryJavaSound.class),
 new JavafxSoundDevice(),
