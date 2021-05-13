@@ -61,8 +61,6 @@ public class Lwjgl3InputSystem extends InputSystemEventClass {
     }
   };
   
-  private boolean initialized = false;
-  
   public Lwjgl3InputSystem (final long glfwWindow) {
     this.glfwWindow = glfwWindow;
   }
@@ -77,15 +75,11 @@ public class Lwjgl3InputSystem extends InputSystemEventClass {
     glfwSetMouseButtonCallback(glfwWindow, mouseButtonCallback);
     glfwSetKeyCallback(glfwWindow, keyCallback);
     glfwSetScrollCallback(glfwWindow, scrollCallback);
-    
-    initialized = true;
   }
 
   public void shutdown() {
     log.finer("Shutting down LWJGL3 input system...");
     clearEvents();
-    
-    initialized = false;
   }
 
   @Override
