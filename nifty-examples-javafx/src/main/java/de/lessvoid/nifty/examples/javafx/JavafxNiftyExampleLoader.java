@@ -11,6 +11,7 @@ import de.lessvoid.nifty.sound.javafx.JavafxSoundDevice;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.layout.Pane;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -21,11 +22,17 @@ public class JavafxNiftyExampleLoader {
   
   private static Nifty nifty;
   private static NiftyExample example;
-
+  private static JavafxInputSystem inputSystem;
+  
   public interface RenderLoopCallback {
     void process(@Nonnull Nifty nifty);
   }
 
+  public static JavafxInputSystem getInputSystem()
+  {
+    if (inputSystem==null) { inputSystem = new JavafxInputSystem(); }
+    return inputSystem;
+  }
   /**
    * Easily run any {@link de.lessvoid.nifty.examples.NiftyExample}. Just instantiate your example and pass it to this
    * method. This method will use LWJGL to run your example, automatically creating & initializing an LWJGL application
@@ -34,7 +41,7 @@ public class JavafxNiftyExampleLoader {
    * @param runExample The {@link de.lessvoid.nifty.examples.NiftyExample} to run.
    */
   public static void run (@Nonnull final NiftyExample runExample) {
-    initNifty(new JavafxInputSystem());
+    initNifty(getInputSystem());
     if (nifty==null) { throw new NullPointerException("Error init nifty!"); }
     example = runExample;
     String[] args = new String[3];
@@ -54,8 +61,9 @@ public class JavafxNiftyExampleLoader {
    *                 the beginning of each frame. You can put any custom code here that needs to be executed every frame.
    *                 It also provides you access to the Nifty instance.
    */
-  public static void runInit (@Nullable RenderLoopCallback callback) {
+  public static void runInit (@Nullable RenderLoopCallback callback, Pane pane) {
     try {
+      getInputSystem().registerPane(pane);
       example.prepareStart(nifty);
       String mainXml = example.getMainXML();
       if (mainXml != null) {

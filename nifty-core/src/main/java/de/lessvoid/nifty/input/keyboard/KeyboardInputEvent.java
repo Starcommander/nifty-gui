@@ -172,9 +172,6 @@ public class KeyboardInputEvent {
    */
   private boolean controlDown;
 
-  public KeyboardInputEvent() {
-  }
-
   /**
    * create the event.
    *

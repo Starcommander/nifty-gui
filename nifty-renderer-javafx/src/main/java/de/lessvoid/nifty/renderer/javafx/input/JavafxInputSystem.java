@@ -5,184 +5,73 @@ package de.lessvoid.nifty.renderer.javafx.input;
  * @author Joseph
  */
 
-import de.lessvoid.nifty.NiftyInputConsumer;
+import com.starcom.math.Point2i;
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
-import de.lessvoid.nifty.spi.input.InputSystem;
-import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
-
-import javax.annotation.Nonnull;
-import java.nio.IntBuffer;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import de.lessvoid.nifty.spi.input.InputSystemEventClass;
 import java.util.logging.Logger;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
-public class JavafxInputSystem implements InputSystem {
+public class JavafxInputSystem extends InputSystemEventClass {
   private final Logger log = Logger.getLogger(JavafxInputSystem.class.getName());
-//  @Nonnull
-//  private final LwjglKeyboardInputEventCreator keyboardEventCreator = new LwjglKeyboardInputEventCreator();
-//  private final IntBuffer viewportBuffer = BufferUtils.createIntBuffer(4 * 4);
-//  @Nonnull
-//  private final ConcurrentLinkedQueue<MouseInputEvent> mouseEventsOut = new ConcurrentLinkedQueue<MouseInputEvent>();
-//  private final ConcurrentLinkedQueue<KeyboardInputEvent> keyboardEventsOut = new
-//      ConcurrentLinkedQueue<KeyboardInputEvent>();
-//  public boolean niftyHasKeyboardFocus = true;
-//  public boolean niftyTakesKeyboardFocusOnClick = false;
+  private final Point2i mousePos = new Point2i();
+
+  public void registerPane(Pane pane)
+  {
+    pane.setOnMouseMoved((ev) -> queueMouseEvent((int)ev.getX(), (int)ev.getY()));
+    pane.setOnMousePressed((ev) -> queueMouseClick(ev, true));
+    pane.setOnMouseReleased((ev) -> queueMouseClick(ev, false));
+    pane.setOnScroll((ev) -> queueMouseEvent((int)(ev.getDeltaY()/10.0f)));
+    pane.setOnKeyPressed((ev) -> queueKey(ev, true));
+    pane.setOnKeyReleased((ev) -> queueKey(ev, false));
+  }
+  
+  private void queueMouseMove(int mouseX, int mouseY)
+  {
+    queueMouseEvent(mouseX,mouseY);
+    this.mousePos.x = mouseX;
+    this.mousePos.y = mouseY;
+  }
+  
+  private void queueMouseClick(MouseEvent ev, boolean down)
+  {
+    this.mousePos.x = (int)ev.getX();
+    this.mousePos.y = (int)ev.getY();
+    var mb = ev.getButton();
+    if (mb == MouseButton.PRIMARY) { queueMouseEvent(0, down); }
+    else if (mb == MouseButton.SECONDARY) { queueMouseEvent(1, down); }
+    else { queueMouseEvent(2, down); }
+  }
+  
+  private void queueKey(KeyEvent ev, boolean down)
+  {
+    boolean ctrlDown = ev.isControlDown();
+    boolean shiftDown = ev.isShiftDown();
+    int key = JavafxToNiftyKeyCodeConverter.convert(ev.getCode());
+    String charS = ev.getCharacter();
+    char c = 'A';
+    if (charS.length()==1) { c = charS.toCharArray()[0]; }
+    var ke = new KeyboardInputEvent(key, c, down, shiftDown, ctrlDown);
+    queueKeyboardEvent(ke);
+  }
+  
+  @Override
+  public Point2i getMousePosition()
+  {
+    return mousePos;
+  }
 
   @Override
-  public void setResourceLoader(@Nonnull final NiftyResourceLoader resourceLoader) {
-  }
-//
-//  public void startup() throws Exception {
-//    Mouse.create();
-//    Keyboard.create();
-//    Keyboard.enableRepeatEvents(true);
-//    logMouseCapabilities();
-//  }
-//
-//  public void shutdown() {
-//    Mouse.destroy();
-//    Keyboard.destroy();
-//  }
-
-  // InputSystem Implementation
-
-  @Override
-  public void forwardEvents(@Nonnull final NiftyInputConsumer inputEventConsumer) {
-//    mouseEventsOut.clear();
-//    keyboardEventsOut.clear();
-//
-//    processMouseEvents(inputEventConsumer);
-//    processKeyboardEvents(inputEventConsumer);
+  public void pollEvents()
+  {
   }
 
   @Override
-  public void setMousePosition(final int x, final int y) {
-//    int viewportHeight = getViewportHeight();
-//    Mouse.setCursorPosition(x, viewportHeight - y);
+  public void setMousePosition(int x, int y)
+  {
+    log.warning("Not supported yet: setMousePos(x,y)");
   }
 
-  // Additional methods to access events in case they've got not handled by Nifty
-
-  /**
-   * This can be called the check if any mouse events have not been handled by Nifty.
-   *
-   * @return true when mouse events are available and false if not
-   */
-//  public boolean hasNextMouseEvent() {
-//    return mouseEventsOut.peek() != null;
-//    return false;
-//  }
-
-  /**
-   * Retrieve a unhandled mouse event from the internal queue.
-   *
-   * @return MouseInputEvent of the mouse event that was not handled by Nifty
-   */
-//  public MouseInputEvent nextMouseEvent() {
-//    return mouseEventsOut.poll();
-//    return null;
-//  }
-
-  /**
-   * This can be called the check if any keyboard events have not been handled by Nifty.
-   *
-   * @return true when keyboard events are available and false if not
-   */
-  public boolean hasNextKeyboardEvent() {
-//    return keyboardEventsOut.peek() != null;
-    return false;
-  }
-
-  /**
-   * Retrieve a unhandled keyboard event from the internal queue.
-   *
-   * @return KeyboardInputEvent of the event that was not handled by Nifty
-   */
-  public KeyboardInputEvent nextKeyboardEvent() {
-//    return keyboardEventsOut.poll();
-    return null;
-  }
-
-  // Internals
-
-  private void processMouseEvents(@Nonnull final NiftyInputConsumer inputEventConsumer) {
-//    int viewportHeight = getViewportHeight();
-//    while (Mouse.next()) {
-//      int mouseX = Mouse.getEventX();
-//      int mouseY = viewportHeight - Mouse.getEventY();
-//      int mouseWheel = Mouse.getEventDWheel() / 120; // not sure about that 120 here. works on my system and makes
-//      // this return 1 if the wheel is moved the minimal amount.
-//      int button = Mouse.getEventButton();
-//      boolean buttonDown = Mouse.getEventButtonState();
-//
-//      // now send the event to nifty
-//      boolean mouseEventProcessedByNifty = inputEventConsumer.processMouseEvent(mouseX, mouseY, mouseWheel, button,
-//          buttonDown);
-//      if (!mouseEventProcessedByNifty) {
-//        log.fine("Nifty did not processed this mouse event. You can handle it.");
-//
-//        // nifty did not process this event, it did not hit any element
-//        mouseEventsOut.offer(new MouseInputEvent(mouseX, mouseY, mouseWheel, button, buttonDown));
-//        if (niftyTakesKeyboardFocusOnClick) {
-//          log.fine("Nifty gave up the keyboard focus");
-//          niftyHasKeyboardFocus = false; // give up focus if clicked outside nifty
-//        }
-//      } else {
-//        log.fine("Nifty has processed this mouse event");
-//
-//        // nifty did handle that event. it hit an element and was processed by some GUI element
-//        if (niftyTakesKeyboardFocusOnClick) { // take focus if nifty element is clicked
-//          log.fine("Nifty takes the keyboard focus back");
-//          niftyHasKeyboardFocus = true;
-//        }
-//      }
-//    }
-  }
-
-  private void processKeyboardEvents(@Nonnull final NiftyInputConsumer inputEventConsumer) {
-//    while (Keyboard.next()) {
-//      KeyboardInputEvent event = keyboardEventCreator.createEvent(Keyboard.getEventKey(),
-//          Keyboard.getEventCharacter(), Keyboard.getEventKeyState());
-//      // due to or short-circuiting on true, the event will get forward to keyboardEventsOut if keyboardEventsOut=true
-//      if (!niftyHasKeyboardFocus || !inputEventConsumer.processKeyboardEvent(event)) {
-//        keyboardEventsOut.offer(event);
-//      }
-//    }
-  }
-
-//  private int getViewportHeight() {
-//    GL11.glGetInteger(GL11.GL_VIEWPORT, viewportBuffer);
-//    return viewportBuffer.get(3);
-//  }
-
-
-//  private static void add(@Nonnull StringBuffer out, String text) {
-//    if (out.length() > 0) {
-//      out.append(", ");
-//    }
-//    out.append(text);
-//  }
-
-//  public static class MouseInputEvent {
-//    public float mouseX;
-//    public float mouseY;
-//    public float pmouseX;
-//    public float pmouseY;
-//    public int button;
-//    public int scroll;
-//    public boolean buttonDown;
-//
-//    MouseInputEvent(float mx, float my, int scroll, int button, boolean buttonDown) {
-//      this.mouseX = mx;
-//      this.mouseY = my;
-//      this.button = button;
-//      this.scroll = scroll;
-//      this.buttonDown = buttonDown;
-//    }
-//
-//    @Nonnull
-//    @Override
-//    public String toString() {
-//      return this.button + "=" + this.buttonDown + " at " + this.mouseX + "," + this.mouseY + " scroll:" + this.scroll;
-//    }
-//  }
 }
