@@ -99,6 +99,15 @@ public interface RenderDevice {
 
   /**
    * Render the image.
+   * Uses a color, that should be painted.
+   * Where the color opacity affects the transparency of the image.
+   * And the rgb color is multiplied anyhow with color of image.
+   * @param x The x position.
+   * @param y The y position.
+   * @param w The width to paint.
+   * @param h The hight to paint.
+   * @param color The color that should be painted.
+   * @param scale Multipies the XY scale.
    */
   void renderImage(
       @Nonnull RenderImage image,
@@ -111,6 +120,21 @@ public interface RenderDevice {
 
   /**
    * Render a sub image of this image.
+   * Uses a color, that should be painted.
+   * Where the color opacity affects the transparency of the image.
+   * And the rgb color is multiplied anyhow with color of image.
+   * @param x The x position.
+   * @param y The y position.
+   * @param w The width to paint.
+   * @param h The hight to paint.
+   * @param srcX The sub-image x pos.
+   * @param srcY The sub-image y pos.
+   * @param srcW The sub-image width.
+   * @param srcH The sub-image height.
+   * @param color The color that should be painted.
+   * @param scale Multipies the XY scale.
+   * @param centerX No idea yet.
+   * @param centerY No idea yet.
    */
   void renderImage(
       @Nonnull RenderImage image,
@@ -141,6 +165,7 @@ public interface RenderDevice {
 
   /**
    * Enable clipping to the given region.
+   * <br>All outside the region will not be painted from now on.
    */
   void enableClip(int x0, int y0, int x1, int y1);
 

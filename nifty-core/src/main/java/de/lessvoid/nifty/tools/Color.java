@@ -134,14 +134,21 @@ public class Color {
     return Integer.toHexString((int) (redValue * 15));
   }
 
+  /** Returns the color string.
+   * <br>Example red: #ff0000ff **/
+  @Nonnull
   public String getColorString() {
     return colorString;
   }
 
+  /** Sets the color string.
+   * <br>Example red: #ff0000ff **/
   public void setColorString(final String colorString) {
     this.colorString = colorString;
   }
 
+  /** Returns the color string.
+   * <br>Example red: #ff0000 **/
   @Nonnull
   public String getColorStringWithoutAlpha() {
     return colorString.substring(0, colorString.length() - 1);
@@ -162,7 +169,7 @@ public class Color {
   }
 
   /**
-   * get the red component.
+   * get the red component. (0-1)
    *
    * @return red
    */
@@ -171,7 +178,7 @@ public class Color {
   }
 
   /**
-   * get the green component.
+   * get the green component. (0-1)
    *
    * @return green
    */
@@ -180,7 +187,7 @@ public class Color {
   }
 
   /**
-   * get the blue component.
+   * get the blue component. (0-1)
    *
    * @return blue
    */
@@ -189,7 +196,7 @@ public class Color {
   }
 
   /**
-   * get alpha value.
+   * get alpha value. (0-1)
    *
    * @return alpha
    */

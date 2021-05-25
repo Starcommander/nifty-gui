@@ -15,6 +15,8 @@ import java.nio.IntBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.ColorInput;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +40,7 @@ public class JavafxRenderDevice implements RenderDevice {
   private final Pane pane;
   private final int initW;
   private final int initH;
+  private Rectangle clipRect;
 //
 //  // we keep track of which GL states we've already set to make sure we don't set
 //  // the same state twice.
@@ -105,6 +108,7 @@ public class JavafxRenderDevice implements RenderDevice {
 
   @Override
   public void beginFrame() {
+    clipRect = null;
   }
 
   @Override
@@ -165,6 +169,7 @@ public class JavafxRenderDevice implements RenderDevice {
 //    r.setStrokeWidth(line_thick);
     r.setFill(new javafx.scene.paint.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
 //    r.setStroke(Frame.color);
+    r.setClip(clipRect);
     pane.getChildren().add(r);
   }
 
@@ -214,6 +219,7 @@ public class JavafxRenderDevice implements RenderDevice {
     imgView.setScaleY(scale);
     imgView.setX(x);
     imgView.setY(y);
+    imgView.setClip(clipRect);
     
     //TODO: Width and Height
     
@@ -262,22 +268,29 @@ public class JavafxRenderDevice implements RenderDevice {
     float scaleY = 1;
     int xDiff = 0;
     int yDiff = 0;
-    if (srcW>0 && w>0 && srcW<w) { scaleX = w/srcW; xDiff = (w-srcW)/2; }
-    if (srcH>0 && h>0 && srcH<h) { scaleY = h/srcH; yDiff = (h-srcH)/2; }
+    if (srcW>0 && srcW<w) { scaleX = w/srcW; xDiff = (w-srcW)/2; }
+    if (srcH>0 && srcH<h) { scaleY = h/srcH; yDiff = (h-srcH)/2; }
     imgView.setScaleX(scale * scaleX);
     imgView.setScaleY(scale * scaleY);
     imgView.setX(x + xDiff);
     imgView.setY(y + yDiff);
     
     imgView.setViewport(new Rectangle2D(srcX,srcY,srcW,srcH));
+    imgView.setClip(clipRect);
     
+    Blend blend = new Blend();
+    javafx.scene.paint.Color c = new javafx.scene.paint.Color(color.getRed(),color.getGreen(),color.getBlue(),0);
+    ColorInput ci = new ColorInput(x, y, w, h, c);
+    blend.setTopInput(ci);
+    blend.setMode(javafx.scene.effect.BlendMode.MULTIPLY);
+    imgView.setEffect(blend);
+
+    float opa = color.getAlpha();
+    imgView.setStyle("-fx-opacity: " + opa + ";");
+
     //TODO: CenterX and CenterY
     
-//    if (!pane.getChildren().contains(imgView))
-//    {
-      pane.getChildren().add(imgView);
-//    }
-
+    pane.getChildren().add(imgView);
   }
 
   /**
@@ -300,6 +313,7 @@ public class JavafxRenderDevice implements RenderDevice {
     t.setX(x);
     t.setY(y + (jf.getHeight()/2)); //TODO: Howto find y?
     t.setFill(new javafx.scene.paint.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
+    t.setClip(clipRect);
     pane.getChildren().add(t);
     
     //TODO: fontSizeX and fontSizeY
@@ -316,8 +330,13 @@ public class JavafxRenderDevice implements RenderDevice {
   @Override
   public void enableClip(final int x0, final int y0, final int x1, final int y1) {
     log.fine("enableClip()");
-
-    //TODO: Enable clip.
+    int xx = Math.min(x0, x1);
+    int yy = Math.min(y0, y1);
+    int ww = x1 - x0;
+    int hh = y1 - y0;
+    if (ww < 0) { ww = -ww; }
+    if (hh < 0) { hh = -hh; }
+    clipRect = new Rectangle(xx,yy,ww,hh);
   }
 
   /**
@@ -326,8 +345,7 @@ public class JavafxRenderDevice implements RenderDevice {
   @Override
   public void disableClip() {
     log.fine("disableClip()");
-
-    //TODO: Disable clip.
+    clipRect = null;
   }
 
   @Override
