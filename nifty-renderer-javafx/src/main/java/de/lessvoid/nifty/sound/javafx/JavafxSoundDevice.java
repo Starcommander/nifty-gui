@@ -4,6 +4,7 @@ import de.lessvoid.nifty.sound.SoundSystem;
 import de.lessvoid.nifty.spi.sound.SoundDevice;
 import de.lessvoid.nifty.spi.sound.SoundHandle;
 import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
+import java.util.logging.Logger;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
@@ -15,6 +16,7 @@ import javafx.scene.media.MediaPlayer;
  * @author Xuanming
  */
 public class JavafxSoundDevice implements SoundDevice {
+  private final static Logger log = Logger.getLogger(JavafxSoundDevice.class.getName());
 	
 	NiftyResourceLoader resourceLoader;
 	
@@ -43,17 +45,18 @@ public class JavafxSoundDevice implements SoundDevice {
               try
               {
                   mp = new MediaPlayer(new Media(resourceLoader.getResource(filename).toString()));
+                  log.info("Open audio with javafxPlayer: " + filename);
               }
               catch (MediaException e)
               {
-                System.out.println("Cannot load media with javafx, try with spiPlayer: " + filename);
+                log.info("Open audio with spiPlayer: " + filename);
               }
               return mp;
             }
 
             private SpiPlayer createSpiPlayer()
             {
-              if (mediaPlayer!=null) { System.err.println("No SpiPlayer necessary, using Javafx."); return null; }
+              if (mediaPlayer!=null) { return null; }
               return new SpiPlayer(resourceLoader.getResource(filename));
             }
 

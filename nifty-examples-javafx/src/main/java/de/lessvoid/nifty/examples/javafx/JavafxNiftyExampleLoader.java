@@ -45,7 +45,7 @@ public class JavafxNiftyExampleLoader {
     if (nifty==null) { throw new NullPointerException("Error init nifty!"); }
     example = runExample;
     String[] args = new String[3];
-    args[0] = example.getTitle();
+    args[0] = example.getTitle() + " JavaFX";
     args[1] = "" + FRAME_W;
     args[2] = "" + FRAME_H;
             

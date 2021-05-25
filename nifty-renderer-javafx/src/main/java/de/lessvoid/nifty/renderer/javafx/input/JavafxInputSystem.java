@@ -15,14 +15,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class JavafxInputSystem extends InputSystemEventClass {
-  private final Logger log = Logger.getLogger(JavafxInputSystem.class.getName());
+  private final static Logger log = Logger.getLogger(JavafxInputSystem.class.getName());
   private final Point2i mousePos = new Point2i();
 
   public void registerPane(Pane pane)
   {
-    pane.setOnMouseMoved((ev) -> queueMouseEvent((int)ev.getX(), (int)ev.getY()));
+    pane.setOnMouseMoved((ev) -> queueMouseMove((int)ev.getX(), (int)ev.getY()));
     pane.setOnMousePressed((ev) -> queueMouseClick(ev, true));
     pane.setOnMouseReleased((ev) -> queueMouseClick(ev, false));
+    pane.setOnMouseDragged((ev) -> queueMouseMove((int)ev.getX(), (int)ev.getY()));
     pane.setOnScroll((ev) -> queueMouseEvent((int)(ev.getDeltaY()/10.0f)));
     pane.setOnKeyPressed((ev) -> queueKey(ev, true));
     pane.setOnKeyReleased((ev) -> queueKey(ev, false));

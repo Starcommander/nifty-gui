@@ -203,7 +203,6 @@ public class JavafxRenderDevice implements RenderDevice {
       @Nonnull final Color color,
       final float scale) {
     log.fine("renderImage()");
-//    System.out.println("renderImage1(" + x + "," + y + ")");
     
     JavafxRenderImage img = (JavafxRenderImage)image;
     var imgView = img.getImageView();
@@ -259,14 +258,19 @@ public class JavafxRenderDevice implements RenderDevice {
     {
       imgView = img.createImageView();
     }
-    imgView.setScaleX(scale);
-    imgView.setScaleY(scale);
-    imgView.setX(x);
-    imgView.setY(y);
+    float scaleX = 1;
+    float scaleY = 1;
+    int xDiff = 0;
+    int yDiff = 0;
+    if (srcW>0 && w>0 && srcW<w) { scaleX = w/srcW; xDiff = (w-srcW)/2; }
+    if (srcH>0 && h>0 && srcH<h) { scaleY = h/srcH; yDiff = (h-srcH)/2; }
+    imgView.setScaleX(scale * scaleX);
+    imgView.setScaleY(scale * scaleY);
+    imgView.setX(x + xDiff);
+    imgView.setY(y + yDiff);
     
     imgView.setViewport(new Rectangle2D(srcX,srcY,srcW,srcH));
     
-    //TODO: Width and Height
     //TODO: CenterX and CenterY
     
 //    if (!pane.getChildren().contains(imgView))
@@ -294,7 +298,7 @@ public class JavafxRenderDevice implements RenderDevice {
     Text t = new Text(text);
     t.setFont(jf.getFont());
     t.setX(x);
-    t.setY(y);
+    t.setY(y + (jf.getHeight()/2)); //TODO: Howto find y?
     t.setFill(new javafx.scene.paint.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
     pane.getChildren().add(t);
     
