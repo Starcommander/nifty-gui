@@ -2,40 +2,17 @@ package de.lessvoid.nifty.renderer.javafx.input;
 
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class JavafxToNiftyKeyCodeConverter
 {
 
+  /** Convert javafx to nifty keycode.
+  * <br>Used for KeyPressed or KeyReleased, but not KeyTyped **/
   public static int convert(KeyCode key)
   {
     switch (key)
     {
-      case A: return KeyboardInputEvent.KEY_A;
-      case B: return KeyboardInputEvent.KEY_B;
-      case C: return KeyboardInputEvent.KEY_C;
-      case D: return KeyboardInputEvent.KEY_D;
-      case E: return KeyboardInputEvent.KEY_E;
-      case F: return KeyboardInputEvent.KEY_F;
-      case G: return KeyboardInputEvent.KEY_G;
-      case H: return KeyboardInputEvent.KEY_H;
-      case I: return KeyboardInputEvent.KEY_I;
-      case J: return KeyboardInputEvent.KEY_J;
-      case K: return KeyboardInputEvent.KEY_K;
-      case L: return KeyboardInputEvent.KEY_L;
-      case M: return KeyboardInputEvent.KEY_M;
-      case N: return KeyboardInputEvent.KEY_N;
-      case O: return KeyboardInputEvent.KEY_O;
-      case P: return KeyboardInputEvent.KEY_P;
-      case Q: return KeyboardInputEvent.KEY_Q;
-      case R: return KeyboardInputEvent.KEY_R;
-      case S: return KeyboardInputEvent.KEY_S;
-      case T: return KeyboardInputEvent.KEY_T;
-      case U: return KeyboardInputEvent.KEY_U;
-      case V: return KeyboardInputEvent.KEY_V;
-      case W: return KeyboardInputEvent.KEY_W;
-      case X: return KeyboardInputEvent.KEY_X;
-      case Y: return KeyboardInputEvent.KEY_Y;
-      case Z: return KeyboardInputEvent.KEY_Z;
       case DIGIT0: return KeyboardInputEvent.KEY_0;
       case DIGIT1: return KeyboardInputEvent.KEY_1;
       case DIGIT2: return KeyboardInputEvent.KEY_2;
@@ -46,22 +23,15 @@ public class JavafxToNiftyKeyCodeConverter
       case DIGIT7: return KeyboardInputEvent.KEY_7;
       case DIGIT8: return KeyboardInputEvent.KEY_8;
       case DIGIT9: return KeyboardInputEvent.KEY_9;
-      case MINUS: return KeyboardInputEvent.KEY_MINUS;
       case ESCAPE: return KeyboardInputEvent.KEY_ESCAPE;
       case EQUALS: return KeyboardInputEvent.KEY_EQUALS;
       case BACK_SPACE: return KeyboardInputEvent.KEY_BACK;
       case TAB: return KeyboardInputEvent.KEY_TAB;
-      case OPEN_BRACKET: return KeyboardInputEvent.KEY_LBRACKET;
-      case CLOSE_BRACKET: return KeyboardInputEvent.KEY_RBRACKET;
       case ENTER: return KeyboardInputEvent.KEY_RETURN;
       case CONTROL: return KeyboardInputEvent.KEY_LCONTROL;
-      case SEMICOLON: return KeyboardInputEvent.KEY_SEMICOLON;
       case DEAD_GRAVE: return KeyboardInputEvent.KEY_GRAVE;
       case SHIFT: return KeyboardInputEvent.KEY_LSHIFT;
       case BACK_SLASH: return KeyboardInputEvent.KEY_BACKSLASH;
-      case COMMA: return KeyboardInputEvent.KEY_COMMA;
-      case PERIOD: return KeyboardInputEvent.KEY_PERIOD;
-      case SLASH: return KeyboardInputEvent.KEY_SLASH;
       case MULTIPLY: return KeyboardInputEvent.KEY_MULTIPLY;
       case CONTEXT_MENU: return KeyboardInputEvent.KEY_LMENU;
       case SPACE: return KeyboardInputEvent.KEY_SPACE;
@@ -98,10 +68,6 @@ public class JavafxToNiftyKeyCodeConverter
       case KANA: return KeyboardInputEvent.KEY_KANA;
       case CONVERT: return KeyboardInputEvent.KEY_CONVERT;
       case NONCONVERT: return KeyboardInputEvent.KEY_NOCONVERT;
-      case CIRCUMFLEX: return KeyboardInputEvent.KEY_CIRCUMFLEX;
-      case AT: return KeyboardInputEvent.KEY_AT;
-      case COLON: return KeyboardInputEvent.KEY_COLON;
-      case UNDERSCORE: return KeyboardInputEvent.KEY_UNDERLINE;
       case KANJI: return KeyboardInputEvent.KEY_KANJI;
       case STOP: return KeyboardInputEvent.KEY_STOP;
       case JAPANESE_KATAKANA: return KeyboardInputEvent.KEY_KANA;
@@ -118,6 +84,88 @@ public class JavafxToNiftyKeyCodeConverter
       case INSERT: return KeyboardInputEvent.KEY_INSERT;
       case DELETE: return KeyboardInputEvent.KEY_DELETE;
       case META: return KeyboardInputEvent.KEY_LMETA;
+      default: return KeyboardInputEvent.KEY_NONE;
+    }
+  }
+  
+  /** Convert char to nifty keycode.
+  * <br>Used for KeyTyped, but not KeyPressed or KeyReleased **/
+  public static int convertFromChar(char c)
+  {
+    if (Character.isAlphabetic(c)) { c = Character.toUpperCase(c); }
+    switch(c)
+    {
+      case '-': return KeyboardInputEvent.KEY_MINUS;
+      case '[': return KeyboardInputEvent.KEY_LBRACKET;
+      case ']': return KeyboardInputEvent.KEY_RBRACKET;
+      case ';': return KeyboardInputEvent.KEY_SEMICOLON;
+      case ',': return KeyboardInputEvent.KEY_COMMA;
+      case '.': return KeyboardInputEvent.KEY_PERIOD;
+      case '/': return KeyboardInputEvent.KEY_SLASH;
+      case '^': return KeyboardInputEvent.KEY_CIRCUMFLEX;
+      case '@': return KeyboardInputEvent.KEY_AT;
+      case ':': return KeyboardInputEvent.KEY_COLON;
+      case '_': return KeyboardInputEvent.KEY_UNDERLINE;
+      case 'A': return KeyboardInputEvent.KEY_A;
+      case 'B': return KeyboardInputEvent.KEY_B;
+      case 'C': return KeyboardInputEvent.KEY_C;
+      case 'D': return KeyboardInputEvent.KEY_D;
+      case 'E': return KeyboardInputEvent.KEY_E;
+      case 'F': return KeyboardInputEvent.KEY_F;
+      case 'G': return KeyboardInputEvent.KEY_G;
+      case 'H': return KeyboardInputEvent.KEY_H;
+      case 'I': return KeyboardInputEvent.KEY_I;
+      case 'J': return KeyboardInputEvent.KEY_J;
+      case 'K': return KeyboardInputEvent.KEY_K;
+      case 'L': return KeyboardInputEvent.KEY_L;
+      case 'M': return KeyboardInputEvent.KEY_M;
+      case 'N': return KeyboardInputEvent.KEY_N;
+      case 'O': return KeyboardInputEvent.KEY_O;
+      case 'P': return KeyboardInputEvent.KEY_P;
+      case 'Q': return KeyboardInputEvent.KEY_Q;
+      case 'R': return KeyboardInputEvent.KEY_R;
+      case 'S': return KeyboardInputEvent.KEY_S;
+      case 'T': return KeyboardInputEvent.KEY_T;
+      case 'U': return KeyboardInputEvent.KEY_U;
+      case 'V': return KeyboardInputEvent.KEY_V;
+      case 'W': return KeyboardInputEvent.KEY_W;
+      case 'X': return KeyboardInputEvent.KEY_X;
+      case 'Y': return KeyboardInputEvent.KEY_Y;
+      case 'Z': return KeyboardInputEvent.KEY_Z;
+    }
+    return KeyboardInputEvent.KEY_NONE;
+  }
+  
+  /** Convert javafx to char, because also needed by nifty. **/
+  public static char convertToChar(KeyEvent key)
+  {
+    if (key.getCode().isLetterKey())
+    {
+      if (key.isShiftDown()) { return key.getCode().getChar().toUpperCase().toCharArray()[0]; }
+      else { return key.getCode().getChar().toLowerCase().toCharArray()[0]; }
+    }
+    if (key.getCode().isDigitKey()) { return key.getCode().getChar().toCharArray()[0];}
+    switch (key.getCode())
+    {
+      case MINUS: return '-';
+      case EQUALS: return '=';
+      case TAB: return '	';
+      case OPEN_BRACKET: return '[';
+      case CLOSE_BRACKET: return ']';
+      case SEMICOLON: return ';';
+      case BACK_SLASH: return '\\';
+      case COMMA: return ',';
+      case PERIOD: return '.';
+      case SLASH: return '/';
+      case MULTIPLY: return '*';
+      case SPACE: return ' ';
+      case SUBTRACT: return '-';
+      case ADD: return '+';
+      case DECIMAL: return ',';
+      case AT: return '@';
+      case COLON: return ':';
+      case UNDERSCORE: return '_';
+      case DIVIDE: return '/';
       default: return KeyboardInputEvent.KEY_NONE;
     }
   }

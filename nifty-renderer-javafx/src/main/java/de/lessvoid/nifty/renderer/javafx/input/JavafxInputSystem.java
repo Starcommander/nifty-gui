@@ -25,8 +25,12 @@ public class JavafxInputSystem extends InputSystemEventClass {
     pane.setOnMouseReleased((ev) -> queueMouseClick(ev, false));
     pane.setOnMouseDragged((ev) -> queueMouseMove((int)ev.getX(), (int)ev.getY()));
     pane.setOnScroll((ev) -> queueMouseEvent((int)(ev.getDeltaY()/10.0f)));
+    pane.setFocusTraversable(true);
+    pane.requestFocus();
+    pane.addEventFilter(MouseEvent.ANY, (e) -> pane.requestFocus());
     pane.setOnKeyPressed((ev) -> queueKey(ev, true));
     pane.setOnKeyReleased((ev) -> queueKey(ev, false));
+    pane.setOnKeyTyped((ev) -> queueKey(ev, null));
   }
   
   private void queueMouseMove(int mouseX, int mouseY)
@@ -46,16 +50,30 @@ public class JavafxInputSystem extends InputSystemEventClass {
     else { queueMouseEvent(2, down); }
   }
   
-  private void queueKey(KeyEvent ev, boolean down)
+  private void queueKey(KeyEvent ev, Boolean down)
   {
     boolean ctrlDown = ev.isControlDown();
     boolean shiftDown = ev.isShiftDown();
-    int key = JavafxToNiftyKeyCodeConverter.convert(ev.getCode());
-    String charS = ev.getCharacter();
-    char c = 'A';
-    if (charS.length()==1) { c = charS.toCharArray()[0]; }
-    var ke = new KeyboardInputEvent(key, c, down, shiftDown, ctrlDown);
-    queueKeyboardEvent(ke);
+    if (down==null)
+    {
+      if (ev.getCharacter() == null) return;
+      if (ev.getCharacter().length()<1) return;
+      char c = ev.getCharacter().toCharArray()[0];
+      int code = JavafxToNiftyKeyCodeConverter.convertFromChar(c);
+      if (code == 0) { return; }
+      var kie = new KeyboardInputEvent(code, c, true, shiftDown, ctrlDown);
+      queueKeyboardEvent(kie);
+      kie = new KeyboardInputEvent(code, c, false, shiftDown, ctrlDown);
+      queueKeyboardEvent(kie);
+    }
+    else
+    {
+      int code = JavafxToNiftyKeyCodeConverter.convert(ev.getCode());
+      if (code == KeyboardInputEvent.KEY_NONE) { return; }
+      char c = JavafxToNiftyKeyCodeConverter.convertToChar(ev);
+      var ke = new KeyboardInputEvent(code, c, down, shiftDown, ctrlDown);
+      queueKeyboardEvent(ke);
+    }
   }
   
   @Override

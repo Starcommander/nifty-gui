@@ -191,6 +191,7 @@ public class JavafxRenderDevice implements RenderDevice {
   /**
    * Render the image using the given Box to specify the render attributes.
    *
+   * @param image The render image.
    * @param x      x
    * @param y      y
    * @param width  width
@@ -231,6 +232,7 @@ public class JavafxRenderDevice implements RenderDevice {
   /**
    * Render sub image.
    *
+   * @param image The render image.
    * @param x     x
    * @param y     y
    * @param w     w
@@ -314,9 +316,9 @@ public class JavafxRenderDevice implements RenderDevice {
     t.setY(y + (jf.getHeight()/2)); //TODO: Howto find y?
     t.setFill(new javafx.scene.paint.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
     t.setClip(clipRect);
+    t.setScaleX(fontSizeX);
+    t.setScaleY(fontSizeY);
     pane.getChildren().add(t);
-    
-    //TODO: fontSizeX and fontSizeY
   }
 
   /**
